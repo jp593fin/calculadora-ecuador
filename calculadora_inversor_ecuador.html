@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora del Inversor Ecuatoriano — Finanzas Ecuador</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #ECEAE6;
+    --bg2:       #F4F2EE;
+    --bg3:       #E4E1DC;
+    --surface:   #FFFFFF;
+    --surface2:  #FAF9F7;
+    --text:      #1A1714;
+    --text2:     #4A4440;
+    --text3:     #7A7470;
+    --yellow:    #F5C518;
+    --yellow-bg: rgba(245,197,24,0.10);
+    --yellow-bd: rgba(245,197,24,0.30);
+    --red:       #C0392B;
+    --red-bg:    rgba(192,57,43,0.07);
+    --red-bd:    rgba(192,57,43,0.20);
+    --green:     #2D7A4F;
+    --green-bg:  rgba(45,122,79,0.08);
+    --border:    rgba(26,23,20,0.09);
+    --border2:   rgba(26,23,20,0.14);
+    --radius:    14px;
+    --radius-sm: 9px;
+    --shadow:    0 2px 12px rgba(26,23,20,0.07), 0 1px 3px rgba(26,23,20,0.05);
+    --shadow-lg: 0 8px 32px rgba(26,23,20,0.10), 0 2px 8px rgba(26,23,20,0.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .hero {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 52px 24px 36px;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--text2);
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 100px;
+    padding: 5px 14px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+  }
+  .hero h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(30px, 6vw, 50px);
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .hero h1 em { font-style: normal; color: #8B6F00; }
+  .hero p {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text2);
+    line-height: 1.68;
+    max-width: 440px;
+    margin: 0 auto 40px;
+  }
+
+  .calc-wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 16px 72px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 22px 28px 18px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 3px;
+  }
+  .card-header h2 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .card-body { padding: 26px 28px 28px; }
+
+  .field { margin-bottom: 22px; }
+  .field label {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 9px;
+  }
+  .input-wrap { position: relative; }
+  .input-prefix {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text3);
+    pointer-events: none;
+  }
+  input[type="number"] {
+    width: 100%;
+    background: var(--bg2);
+    border: 1.5px solid var(--border2);
+    border-radius: var(--radius-sm);
+    padding: 13px 16px 13px 32px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    -moz-appearance: textfield;
+    letter-spacing: -0.01em;
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+  input[type="number"]:focus {
+    border-color: var(--yellow);
+    box-shadow: 0 0 0 3px rgba(245,197,24,0.12);
+  }
+
+  .tab-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .tab-btn {
+    background: var(--bg2);
+    border: 1.5px solid var(--border2);
+    border-radius: var(--radius-sm);
+    padding: 14px 12px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.18s;
+  }
+  .tab-btn:hover { border-color: rgba(26,23,20,0.22); }
+  .tab-btn.active {
+    background: rgba(245,197,24,0.22);
+    border-color: #D4A800;
+    box-shadow: 0 0 0 3px rgba(245,197,24,0.10);
+  }
+  .tab-btn .tb-name {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+  .tab-btn.active .tb-name { color: #4A3500; font-weight: 800; }
+  .tab-btn .tb-sub { font-size: 11px; color: var(--text3); line-height: 1.4; }
+
+  #ibkr-method-field { display: none; }
+  #ibkr-method-field.visible { display: block; }
+  #usdc-subcase-field { display: none; }
+  #usdc-subcase-field.visible { display: block; margin-top: 16px; }
+  #p2p-field { display: none; }
+  #p2p-field.visible { display: block; margin-top: 16px; }
+
+  #xtb-method-field { display: none; }
+  #xtb-method-field.visible { display: block; }
+
+  .result-card.caution-card { background: #FFFDF0; border-color: rgba(180,120,0,0.30); }
+  .result-card.caution-card::before { background: var(--yellow); }
+  .result-card.caution-card .rc-broker { color: #7A5F00; }
+  .result-card.caution-card .rt-val { color: #6B4F00; }
+  .rc-tag.caution { background: rgba(245,197,24,0.15); color: #8B6F00; border: 1px solid rgba(180,120,0,0.30); }
+  .isd-deferred { background: rgba(245,197,24,0.10); border: 1px solid rgba(180,120,0,0.22); border-radius: var(--radius-sm); padding: 13px 16px; margin-top: 12px; font-size: 12px; color: #6B4F00; line-height: 1.6; }
+  .isd-deferred strong { color: #5C4200; }
+
+  .method-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .method-btn {
+    background: var(--bg2);
+    border: 1.5px solid var(--border2);
+    border-radius: var(--radius-sm);
+    padding: 13px 12px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.18s;
+  }
+  .method-btn:hover { border-color: rgba(26,23,20,0.22); }
+  .method-btn.active { background: rgba(245,197,24,0.22); border-color: #D4A800; box-shadow: 0 0 0 2px rgba(245,197,24,0.10); }
+  .method-btn.active .mb-name { color: #4A3500; font-weight: 800; }
+  .method-btn.danger-btn { border-color: var(--red-bd); background: var(--red-bg); }
+  .method-btn.danger-btn.active { border-color: var(--red); background: rgba(192,57,43,0.12); }
+  .method-btn .mb-name {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .method-btn.danger-btn .mb-name { color: var(--red); }
+  .method-btn .mb-sub { font-size: 11px; color: var(--text3); }
+  .method-btn.danger-btn .mb-sub { color: var(--red); opacity: 0.7; }
+  .method-btn.caution-btn { border-color: rgba(180,120,0,0.25); background: rgba(245,197,24,0.06); }
+  .method-btn.caution-btn.active { border-color: var(--yellow); background: rgba(245,197,24,0.13); }
+  .method-btn.caution-btn .mb-name { color: #7A5F00; }
+  .method-btn.caution-btn .mb-sub { color: #9A7800; opacity: 0.85; }
+
+  .caution-note { background: rgba(245,197,24,0.09); border: 1px solid rgba(180,120,0,0.25); border-radius: var(--radius-sm); padding: 16px 18px; margin-top: 6px; font-size: 13px; color: #6B4F00; line-height: 1.65; }
+  .caution-note strong { color: #5C4200; font-weight: 600; }
+
+  #quota-field { display: none; }
+  #quota-field.visible { display: block; margin-top: 18px; }
+  .quota-track { display: flex; align-items: center; gap: 12px; margin-top: 9px; }
+  input[type="range"] {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 5px;
+    background: var(--bg3);
+    border-radius: 3px;
+    outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--text);
+    border: 3px solid var(--yellow);
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  }
+  .quota-val {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text);
+    min-width: 72px;
+    text-align: right;
+  }
+  .quota-hint { font-size: 11.5px; color: var(--text3); margin-top: 8px; line-height: 1.55; font-style: italic; }
+
+  .divider { height: 1px; background: var(--border); margin: 26px 0; }
+
+  .results { display: none; }
+  .results.visible { display: block; animation: fadeUp 0.3s ease; }
+
+  .result-card {
+    border: 1.5px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    margin-bottom: 10px;
+    background: var(--surface2);
+    position: relative;
+    overflow: hidden;
+  }
+  .result-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--border);
+  }
+  .result-card.winner { background: #FFFEF5; border-color: var(--yellow); }
+  .result-card.winner::before { background: var(--yellow); }
+  .result-card.danger-card { background: #FEF8F7; border-color: var(--red-bd); }
+  .result-card.danger-card::before { background: var(--red); }
+
+  .rc-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+  .rc-broker { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 700; color: var(--text); }
+  .result-card.winner .rc-broker { color: #7A5F00; }
+  .result-card.danger-card .rc-broker { color: var(--red); }
+  .rc-tag {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 3px 10px; border-radius: 100px;
+  }
+  .rc-tag.best { background: var(--yellow-bg); color: #8B6F00; border: 1px solid var(--yellow-bd); }
+  .rc-tag.neutral { background: var(--bg3); color: var(--text2); border: 1px solid var(--border2); }
+  .rc-tag.risk { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-bd); }
+
+  .rc-rows { display: flex; flex-direction: column; gap: 8px; }
+  .rc-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+  .rc-row .lbl { color: var(--text2); }
+  .rc-row .val { font-weight: 500; color: var(--text); }
+  .rc-row .val.accent { color: #8B6F00; }
+  .rc-row .val.danger { color: var(--red); }
+  .rc-row .val.good { color: var(--green); }
+
+  .rc-total {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border);
+  }
+  .rt-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text2); margin-bottom: 2px; }
+  .rt-val { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 26px; font-weight: 800; color: var(--text); line-height: 1; }
+  .result-card.winner .rt-val { color: #5C4500; }
+  .result-card.danger-card .rt-val { color: var(--red); }
+  .rt-pct { font-size: 12.5px; color: var(--text2); margin-top: 3px; }
+
+  .recovery { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+  .rec-row { display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; color: var(--text3); margin-bottom: 8px; }
+  .rec-months { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 700; color: var(--green); }
+  .bar-track { height: 5px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; background: var(--green); transition: width 0.7s cubic-bezier(0.4,0,0.2,1); }
+
+  .verdict { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 18px; margin-top: 6px; font-size: 13px; color: var(--text2); line-height: 1.65; }
+  .verdict strong { color: var(--text); }
+  .danger-note { background: var(--red-bg); border: 1px solid var(--red-bd); border-radius: var(--radius-sm); padding: 16px 18px; margin-top: 6px; font-size: 13px; color: var(--red); line-height: 1.65; }
+  .danger-note strong { color: var(--red); font-weight: 600; }
+
+  .calc-btn {
+    width: 100%; background: var(--text); color: #FFFFFF; border: none;
+    border-radius: var(--radius-sm); padding: 16px;
+    font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 0.01em;
+    cursor: pointer; transition: opacity 0.18s, transform 0.14s; margin-top: 6px;
+  }
+  .calc-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+  .calc-btn:active { transform: translateY(0); opacity: 1; }
+
+  .cta-card {
+    background: var(--surface); border: 1px solid var(--border); border-top: 2.5px solid var(--text);
+    border-radius: 20px; box-shadow: var(--shadow-lg); padding: 32px 28px; margin-top: 12px; text-align: center;
+  }
+  .cta-eyebrow { font-size: 10px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
+  .cta-card h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 21px; font-weight: 800; color: var(--text); margin-bottom: 8px; line-height: 1.2; letter-spacing: -0.015em; }
+  .cta-card h3 em { font-style: normal; color: #8B6F00; }
+  .cta-card p { font-size: 13.5px; color: var(--text2); line-height: 1.65; margin-bottom: 22px; max-width: 380px; margin-left: auto; margin-right: auto; }
+  .email-row { display: flex; gap: 8px; max-width: 420px; margin: 0 auto 11px; }
+  .email-input {
+    flex: 1; background: var(--bg2); border: 1.5px solid var(--border2);
+    border-radius: var(--radius-sm); padding: 13px 15px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); outline: none; transition: border-color 0.18s;
+  }
+  .email-input::placeholder { color: var(--text3); }
+  .email-input:focus { border-color: var(--text); }
+  .cta-submit {
+    background: var(--yellow); color: var(--text); border: none; border-radius: var(--radius-sm);
+    padding: 13px 20px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 700;
+    cursor: pointer; white-space: nowrap; transition: opacity 0.18s, transform 0.14s;
+  }
+  .cta-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+  .cta-fine { font-size: 11px; color: var(--text3); }
+
+  .success-state { display: none; padding: 8px 0; }
+  .success-state.visible { display: block; }
+  .success-icon { font-size: 36px; margin-bottom: 10px; }
+  .success-state h4 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .success-state p { font-size: 13px; color: var(--text2); line-height: 1.65; }
+
+  .footer { text-align: center; padding: 24px 24px 48px; font-size: 11px; color: var(--text3); line-height: 1.7; max-width: 640px; margin: 0 auto; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @media (max-width: 480px) {
+    .hero { padding: 36px 16px 24px; }
+    .card-body { padding: 20px 18px; }
+    .cta-card { padding: 24px 18px; }
+    .email-row { flex-direction: column; }
+    .method-group { grid-template-columns: 1fr; }
+    .tab-group { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">🇪🇨 Finanzas Ecuador · Juan</div>
+  <h1>¿Cuánto Cuesta Invertir<br><em>Desde Ecuador?</em></h1>
+  <p>Calcula el costo real de entrar al mercado americano — ISD, comisión bancaria, y en cuántos meses lo recuperas.</p>
+</div>
+
+<div class="calc-wrap">
+  <div class="card">
+    <div class="card-header">
+      <div class="section-label">Configura tu inversión</div>
+      <h2>Ingresa tu monto y situación</h2>
+    </div>
+    <div class="card-body">
+
+      <div class="field">
+        <label>Monto a invertir</label>
+        <div class="input-wrap">
+          <span class="input-prefix">$</span>
+          <input type="number" id="amount" value="5000" min="100" max="200000" step="100" oninput="clearResults()">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Broker</label>
+        <div class="tab-group">
+          <button class="tab-btn active" id="tab-ibkr" onclick="selectBroker('ibkr')">
+            <div class="tb-name">Interactive Brokers</div>
+            <div class="tb-sub">SEC/FINRA · Protección SIPC $500K</div>
+          </button>
+          <button class="tab-btn" id="tab-xtb" onclick="selectBroker('xtb')">
+            <div class="tb-name">XTB</div>
+            <div class="tb-sub">Tarjeta o SafetyPay<br>FSC Belize</div>
+          </button>
+        </div>
+      </div>
+
+      <div id="ibkr-method-field" class="field">
+        <label>Método de depósito en IBKR</label>
+        <div class="method-group">
+          <button class="method-btn active" id="tab-wire" onclick="selectIbkrMethod('wire')">
+            <div class="mb-name">Transferencia bancaria</div>
+            <div class="mb-sub">Wire SWIFT · regulado · directo</div>
+          </button>
+          <button class="method-btn caution-btn" id="tab-usdc" onclick="selectIbkrMethod('usdc')">
+            <div class="mb-name">USDC · Polygon</div>
+            <div class="mb-sub">Zerohash · 24/7 · ver nota</div>
+          </button>
+        </div>
+
+        <div id="usdc-subcase-field">
+          <div style="font-size:11px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--text2);margin-bottom:9px;margin-top:4px;">¿De dónde vienen los fondos?</div>
+          <div class="method-group">
+            <button class="method-btn active" id="tab-p2p" onclick="selectUsdcSubcase('p2p')">
+              <div class="mb-name">Desde Ecuador</div>
+              <div class="mb-sub">Compra USDT vía P2P<br>en Binance</div>
+            </button>
+            <button class="method-btn" id="tab-abroad" onclick="selectUsdcSubcase('abroad')">
+              <div class="mb-name">Fondos en el exterior</div>
+              <div class="mb-sub">Ya tienes USDC/USDT<br>fuera de Ecuador</div>
+            </button>
+          </div>
+        </div>
+
+        <div id="p2p-field">
+          <div style="font-size:11px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--text2);margin-bottom:9px;">Premium P2P Binance</div>
+          <div class="quota-track">
+            <input type="range" id="p2p-slider" min="0" max="2" step="0.1" value="1" oninput="updateP2PLabel()">
+            <div class="quota-val" id="p2p-lbl">1.0%</div>
+          </div>
+          <div class="quota-hint">Verifica el premium actual en Binance P2P antes de transferir. Los mejores vendedores en Ecuador ofrecen 0.5%–1%. Más de 1.5% — busca otra oferta.</div>
+        </div>
+      </div>
+
+      <div id="xtb-method-field" class="field">
+        <label>Método de depósito en XTB</label>
+        <div class="method-group">
+          <button class="method-btn active" id="tab-card" onclick="selectXtbMethod('card')">
+            <div class="mb-name">Tarjeta</div>
+            <div class="mb-sub">~2% fee · exención $5,188/año</div>
+          </button>
+          <button class="method-btn danger-btn" id="tab-safety" onclick="selectXtbMethod('safety')">
+            <div class="mb-name">SafetyPay</div>
+            <div class="mb-sub">⚠ Riesgo SRI</div>
+          </button>
+        </div>
+      </div>
+
+      <div id="quota-field" class="field">
+        <label>Cupo de exención disponible (tarjeta)</label>
+        <div class="quota-track">
+          <input type="range" id="quota" min="0" max="5188" step="4" value="3000" oninput="updateQuotaLabel()">
+          <div class="quota-val" id="quota-lbl">$3,000</div>
+        </div>
+        <div class="quota-hint">Cupo total anual: $5,188 — compartido con Netflix, Amazon, viajes y todas tus compras internacionales con tarjeta.</div>
+      </div>
+
+      <button class="calc-btn" onclick="calculate()">Calcular mi costo →</button>
+
+      <div class="divider" id="div1" style="display:none;"></div>
+      <div class="results" id="results">
+        <div class="section-label" style="margin-bottom:14px;">Tu resultado</div>
+        <div id="result-cards"></div>
+        <div id="verdict-box"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="cta-card" id="cta" style="display:none;">
+    <div class="cta-eyebrow">Recurso gratuito</div>
+    <h3>Descarga la <em>Guía de Costos</em><br>del Inversor Ecuatoriano</h3>
+    <p>PDF de referencia con la tabla completa de costos, las reglas del ISD, el análisis USDC, y la estrategia óptima según tu perfil. Para tener siempre a mano.</p>
+    <div id="form-state">
+      <div class="email-row">
+        <input type="email" class="email-input" id="email-input" placeholder="tu@correo.com">
+        <button class="cta-submit" onclick="handleSubmit()">Descargar →</button>
+      </div>
+      <div class="cta-fine">Sin spam. Solo recursos de inversión para Ecuador.</div>
+    </div>
+    <div class="success-state" id="success-state">
+      <div class="success-icon">✓</div>
+      <h4>Listo — revisa tu correo</h4>
+      <p>La guía en PDF llegará en los próximos minutos.<br>Revisa también la carpeta de promociones.</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    Calculadora educativa — no constituye asesoría financiera o tributaria certificada.<br>
+    Tarifas verificadas abril 2026 · ISD vigente 2025–2027 · Finanzas Ecuador · Juan
+  </div>
+</div>
+
+<script>
+  let broker      = 'ibkr';
+  let ibkrMethod  = 'wire';
+  let usdcSubcase = 'p2p';
+  let xtbMethod   = 'card';
+
+  // ── BROKER SELECTION
+  function selectBroker(b) {
+    broker = b;
+    document.getElementById('tab-ibkr').classList.toggle('active', b === 'ibkr');
+    document.getElementById('tab-xtb').classList.toggle('active', b === 'xtb');
+    const ibkrField  = document.getElementById('ibkr-method-field');
+    const xtbField   = document.getElementById('xtb-method-field');
+    const quotaField = document.getElementById('quota-field');
+    if (b === 'ibkr') {
+      ibkrField.classList.add('visible');
+      xtbField.classList.remove('visible');
+      quotaField.classList.remove('visible');
+      syncIbkrFields();
+    } else {
+      ibkrField.classList.remove('visible');
+      xtbField.classList.add('visible');
+      quotaField.classList.toggle('visible', xtbMethod === 'card');
+    }
+    clearResults();
+  }
+
+  // ── IBKR METHOD
+  function selectIbkrMethod(m) {
+    ibkrMethod = m;
+    document.getElementById('tab-wire').classList.toggle('active', m === 'wire');
+    document.getElementById('tab-usdc').classList.toggle('active', m === 'usdc');
+    syncIbkrFields();
+    clearResults();
+  }
+
+  function syncIbkrFields() {
+    const showUsdc = ibkrMethod === 'usdc';
+    document.getElementById('usdc-subcase-field').classList.toggle('visible', showUsdc);
+    document.getElementById('p2p-field').classList.toggle('visible', showUsdc && usdcSubcase === 'p2p');
+  }
+
+  // ── USDC SUB-CASE
+  function selectUsdcSubcase(s) {
+    usdcSubcase = s;
+    document.getElementById('tab-p2p').classList.toggle('active', s === 'p2p');
+    document.getElementById('tab-abroad').classList.toggle('active', s === 'abroad');
+    document.getElementById('p2p-field').classList.toggle('visible', s === 'p2p');
+    clearResults();
+  }
+
+  // ── XTB METHOD
+  function selectXtbMethod(m) {
+    xtbMethod = m;
+    document.getElementById('tab-card').classList.toggle('active', m === 'card');
+    document.getElementById('tab-safety').classList.toggle('active', m === 'safety');
+    document.getElementById('quota-field').classList.toggle('visible', m === 'card');
+    clearResults();
+  }
+
+  // ── LABEL UPDATES
+  function updateQuotaLabel() {
+    const v = parseInt(document.getElementById('quota').value);
+    document.getElementById('quota-lbl').textContent = '$' + v.toLocaleString('es-EC');
+    clearResults();
+  }
+
+  function updateP2PLabel() {
+    const v = parseFloat(document.getElementById('p2p-slider').value).toFixed(1);
+    document.getElementById('p2p-lbl').textContent = v + '%';
+    clearResults();
+  }
+
+  // ── CLEAR RESULTS
+  function clearResults() {
+    document.getElementById('results').classList.remove('visible');
+    document.getElementById('div1').style.display = 'none';
+    document.getElementById('cta').style.display  = 'none';
+  }
+
+  // ── HELPERS
+  function wireFee(a) {
+    if (a <= 1000)  return 56.97;
+    if (a <= 5000)  return 76.31;
+    if (a <= 10000) return 97.96;
+    return 115.00;
+  }
+  function isdCalc(a)  { return Math.max(0, (a - 1410) * 0.05); }
+  function recoverMonths(cost, amount) {
+    const m = amount * (0.10 / 12);
+    return m > 0 ? (cost / m).toFixed(1) : '—';
+  }
+  function fmt(n)      { return '$' + n.toLocaleString('es-EC', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function pctOf(n, t) { return (n / t * 100).toFixed(2) + '%'; }
+
+  // ── MAIN CALCULATION
+  function calculate() {
+    const amount = parseFloat(document.getElementById('amount').value) || 0;
+    if (amount < 100) { alert('Ingresa un monto de al menos $100.'); return; }
+
+    let cardsHTML   = '';
+    let verdictHTML = '';
+
+    // ─────────── IBKR WIRE ───────────
+    if (broker === 'ibkr' && ibkrMethod === 'wire') {
+      const fee   = wireFee(amount);
+      const isd   = isdCalc(amount);
+      const total = fee + isd;
+      const rec   = recoverMonths(total, amount);
+      const barW  = Math.min(100, parseFloat(rec) / 18 * 100);
+
+      cardsHTML = `
+        <div class="result-card winner">
+          <div class="rc-top">
+            <div class="rc-broker">IBKR — Transferencia bancaria</div>
+            <div class="rc-tag best">Método directo</div>
+          </div>
+          <div class="rc-rows">
+            <div class="rc-row"><span class="lbl">Comisión bancaria (regulada, idéntica en todos los bancos)</span><span class="val">${fmt(fee)}</span></div>
+            <div class="rc-row"><span class="lbl">ISD — 5% sobre exceso de $1,410/quincena</span><span class="val ${isd > 0 ? 'accent' : 'good'}">${fmt(isd)}</span></div>
+          </div>
+          <div class="rc-total">
+            <div><div class="rt-label">Costo total de entrada</div><div class="rt-pct">${pctOf(total, amount)} del capital</div></div>
+            <div class="rt-val">${fmt(total)}</div>
+          </div>
+          <div class="recovery">
+            <div class="rec-row"><span>Recuperas este costo con S&amp;P 500 (~10%/año) en</span><span class="rec-months">${rec} meses</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:${barW}%"></div></div>
+          </div>
+        </div>`;
+
+      if (amount < 3000) {
+        verdictHTML = `<div class="verdict"><strong>Nota:</strong> Con ${fmt(amount)}, el costo (${pctOf(total, amount)}) es alto porque la comisión bancaria mínima es $56.97. Considera acumular hasta $3,000–$5,000. El punto óptimo matemático es <strong>$5,000 → 5.12% de costo.</strong></div>`;
+      } else if (amount <= 5000) {
+        verdictHTML = `<div class="verdict"><strong>Punto óptimo:</strong> Este rango tiene el mejor ratio costo/capital en IBKR. Pagas ${fmt(fee)} de comisión + ${fmt(isd)} de ISD = ${fmt(total)}. Lo recuperas en ${rec} meses con el S&P 500. Activos bajo custodia DTC/DTCC, protección SIPC hasta $500,000.</div>`;
+      } else {
+        verdictHTML = `<div class="verdict">Con ${fmt(amount)}, la comisión bancaria representa solo el ${((fee/total)*100).toFixed(0)}% del costo total — muy eficiente. El ISD domina pero es ineludible para cualquier broker internacional. Custodia federal (DTC/DTCC), protección SIPC.</div>`;
+      }
+
+    // ─────────── IBKR USDC · P2P ───────────
+    } else if (broker === 'ibkr' && ibkrMethod === 'usdc' && usdcSubcase === 'p2p') {
+      const p2pPct      = parseFloat(document.getElementById('p2p-slider').value) / 100;
+      const p2pCost     = amount * p2pPct;
+      const zeroHash    = Math.max(1, amount * 0.003);
+      const gas         = 0.02;
+      const visibleCost = p2pCost + zeroHash + gas;
+      const rec         = recoverMonths(visibleCost, amount);
+      const barW        = Math.min(100, parseFloat(rec) / 18 * 100);
+      const wireTotal   = wireFee(amount) + isdCalc(amount);
+      const limitWarn   = amount > 25000 ? `<div class="rc-row"><span class="lbl" style="color:var(--red);">⚠ Límite por transacción IBKR</span><span class="val danger">Máx. $25,000</span></div>` : '';
+
+      cardsHTML = `
+        <div class="result-card caution-card">
+          <div class="rc-top">
+            <div class="rc-broker">IBKR — USDC vía Polygon</div>
+            <div class="rc-tag caution">Desde Ecuador (P2P)</div>
+          </div>
+          <div class="rc-rows">
+            <div class="rc-row"><span class="lbl">Premium P2P Binance (${(p2pPct*100).toFixed(1)}%)</span><span class="val accent">${fmt(p2pCost)}</span></div>
+            <div class="rc-row"><span class="lbl">Conversión USDT → USDC en Binance</span><span class="val good">$0.00</span></div>
+            <div class="rc-row"><span class="lbl">Zerohash — conversión USDC → USD (0.30%)</span><span class="val">${fmt(zeroHash)}</span></div>
+            <div class="rc-row"><span class="lbl">Gas fee red Polygon</span><span class="val good">~$0.02</span></div>
+            ${limitWarn}
+          </div>
+          <div class="rc-total">
+            <div><div class="rt-label">Costo visible de entrada</div><div class="rt-pct">${pctOf(visibleCost, amount)} del capital</div></div>
+            <div class="rt-val">${fmt(visibleCost)}</div>
+          </div>
+          <div class="recovery">
+            <div class="rec-row"><span>Recuperas el costo visible en</span><span class="rec-months">${rec} meses</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:${barW}%"></div></div>
+          </div>
+          <div class="isd-deferred">
+            <strong>⚠ ISD — zona gris regulatoria</strong><br>
+            La compra de USDT es una transferencia local entre cuentas ecuatorianas — no genera ISD. El punto incierto es el envío de USDC vía Polygon a IBKR: es una transferencia de valor en dólares hacia el exterior sin intervención bancaria. El SRI no tiene regulación específica para este tipo de transacción y no existe agente de retención. No está prohibido, pero tampoco está explícitamente exento. Consulta con un tributarista antes de usar esta ruta para montos significativos.
+          </div>
+        </div>
+        <div class="result-card" style="padding:14px 22px; margin-top:8px;">
+          <div class="rc-top" style="margin-bottom:8px;">
+            <div class="rc-broker" style="font-size:13px;color:var(--text2);">Para comparar: IBKR wire al mismo monto</div>
+            <div class="rc-tag neutral">ISD declarado</div>
+          </div>
+          <div class="rc-row"><span class="lbl" style="font-size:12px;">Comisión + ISD (todo declarado)</span><span class="val">${fmt(wireTotal)} · ${pctOf(wireTotal, amount)}</span></div>
+        </div>`;
+
+      verdictHTML = `<div class="verdict"><strong>Costo visible: ${fmt(visibleCost)} (${pctOf(visibleCost, amount)})</strong> — más bajo que el wire (${fmt(wireTotal)}). El tratamiento del ISD en esta ruta es una zona gris: la compra de USDT es local y no genera ISD, pero el envío de USDC vía blockchain al exterior no tiene regulación específica del SRI. Si tienes dudas sobre tu obligación tributaria, consulta con un tributarista antes de usar esta ruta.</div>`;
+
+    // ─────────── IBKR USDC · ABROAD ───────────
+    } else if (broker === 'ibkr' && ibkrMethod === 'usdc' && usdcSubcase === 'abroad') {
+      const zeroHash    = Math.max(1, amount * 0.003);
+      const gas         = 0.02;
+      const total       = zeroHash + gas;
+      const rec         = recoverMonths(total, amount);
+      const barW        = Math.min(100, parseFloat(rec) / 18 * 100);
+      const wireTotal   = wireFee(amount) + isdCalc(amount);
+      const limitWarn   = amount > 25000 ? `<div class="rc-row"><span class="lbl" style="color:var(--red);">⚠ Límite por transacción IBKR</span><span class="val danger">Máx. $25,000/transacción</span></div>` : '';
+
+      cardsHTML = `
+        <div class="result-card winner">
+          <div class="rc-top">
+            <div class="rc-broker">IBKR — USDC vía Polygon</div>
+            <div class="rc-tag best">Fondos en el exterior ✓</div>
+          </div>
+          <div class="rc-rows">
+            <div class="rc-row"><span class="lbl">ISD</span><span class="val good">$0.00 — fondos ya estaban fuera</span></div>
+            <div class="rc-row"><span class="lbl">Zerohash — conversión USDC → USD (0.30%)</span><span class="val">${fmt(zeroHash)}</span></div>
+            <div class="rc-row"><span class="lbl">Gas fee red Polygon</span><span class="val good">~$0.02</span></div>
+            ${limitWarn}
+          </div>
+          <div class="rc-total">
+            <div><div class="rt-label">Costo total de entrada</div><div class="rt-pct">${pctOf(total, amount)} del capital</div></div>
+            <div class="rt-val">${fmt(total)}</div>
+          </div>
+          <div class="recovery">
+            <div class="rec-row"><span>Recuperas este costo con S&amp;P 500 (~10%/año) en</span><span class="rec-months">${rec} meses</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:${barW}%"></div></div>
+          </div>
+        </div>
+        <div class="result-card" style="padding:14px 22px; margin-top:8px;">
+          <div class="rc-top" style="margin-bottom:8px;">
+            <div class="rc-broker" style="font-size:13px;color:var(--text2);">Para comparar: IBKR wire al mismo monto</div>
+            <div class="rc-tag neutral">Más caro en este caso</div>
+          </div>
+          <div class="rc-row"><span class="lbl" style="font-size:12px;">Comisión + ISD</span><span class="val">${fmt(wireTotal)} · ${pctOf(wireTotal, amount)}</span></div>
+        </div>`;
+
+      verdictHTML = `<div class="verdict"><strong>Esta es la ruta óptima.</strong> Con fondos ya fuera de Ecuador, el USDC vía Polygon es el método más barato disponible en IBKR: solo ${fmt(total)} (${pctOf(total, amount)}) — sin ISD, sin comisión bancaria, disponible 24/7. El wire costaría ${fmt(wireTotal)} (${pctOf(wireTotal, amount)}). La diferencia es ${fmt(wireTotal - total)} a tu favor.</div>`;
+
+    // ─────────── XTB TARJETA ───────────
+    } else if (broker === 'xtb' && xtbMethod === 'card') {
+      const quota     = parseFloat(document.getElementById('quota').value) || 0;
+      const cardFee   = amount * 0.02;
+      const isd       = Math.max(0, (amount - quota) * 0.05);
+      const total     = cardFee + isd;
+      const rec       = recoverMonths(total, amount);
+      const barW      = Math.min(100, parseFloat(rec) / 18 * 100);
+      const ibkrTotal = wireFee(amount) + isdCalc(amount);
+      const xtbWins   = total < ibkrTotal;
+
+      cardsHTML = `
+        <div class="result-card ${xtbWins ? 'winner' : ''}">
+          <div class="rc-top">
+            <div class="rc-broker">XTB — Tarjeta</div>
+            <div class="rc-tag ${xtbWins ? 'best' : 'neutral'}">${xtbWins ? 'Más barato' : 'Alternativa'}</div>
+          </div>
+          <div class="rc-rows">
+            <div class="rc-row"><span class="lbl">Fee tarjeta (~2%)</span><span class="val">${fmt(cardFee)}</span></div>
+            <div class="rc-row"><span class="lbl">ISD (exceso sobre cupo $${quota.toLocaleString('es-EC')})</span><span class="val ${isd > 0 ? 'danger' : 'good'}">${fmt(isd)}</span></div>
+          </div>
+          <div class="rc-total">
+            <div><div class="rt-label">Costo total de entrada</div><div class="rt-pct">${pctOf(total, amount)} del capital</div></div>
+            <div class="rt-val">${fmt(total)}</div>
+          </div>
+          ${total > 0 ? `<div class="recovery"><div class="rec-row"><span>Recuperas este costo en</span><span class="rec-months">${rec} meses</span></div><div class="bar-track"><div class="bar-fill" style="width:${barW}%"></div></div></div>` : ''}
+        </div>
+        <div class="result-card" style="padding:14px 22px;">
+          <div class="rc-top" style="margin-bottom:8px;">
+            <div class="rc-broker" style="font-size:13px;color:var(--text2);">Para comparar: IBKR wire al mismo monto</div>
+            <div class="rc-tag ${!xtbWins ? 'best' : 'neutral'}">${!xtbWins ? 'Más barato' : 'Más caro'}</div>
+          </div>
+          <div class="rc-row"><span class="lbl" style="font-size:12px;">Comisión bancaria + ISD</span><span class="val">${fmt(ibkrTotal)} · ${pctOf(ibkrTotal, amount)}</span></div>
+        </div>`;
+
+      if (quota >= amount) {
+        verdictHTML = `<div class="verdict"><strong>Cupo disponible cubre el monto completo.</strong> Solo pagas ${fmt(cardFee)} (2% fee de tarjeta). Sin ISD. XTB es la opción más barata en este rango. <strong>Importante:</strong> Compra acciones o ETFs enteros — las fracciones en XTB son derechos fiduciarios, no el activo real. Considera migrar a IBKR cuando acumules $5,000.</div>`;
+      } else if (isd === 0) {
+        verdictHTML = `<div class="verdict">Tu cupo cubre el monto. Costo total: solo ${fmt(cardFee)}. Recuerda que este cupo lo comparten Netflix, Amazon, viajes y todas tus compras internacionales.</div>`;
+      } else {
+        verdictHTML = `<div class="verdict">Con cupo de $${quota.toLocaleString('es-EC')}, el ISD sobre el exceso es ${fmt(isd)}. Total: ${fmt(total)} (${pctOf(total, amount)}). ${!xtbWins ? '<strong>En este caso IBKR es más barato</strong> — el cupo agotado elimina la ventaja de la tarjeta.' : `XTB sigue siendo ${fmt(ibkrTotal - total)} más barato que IBKR a este monto y cupo.`}</div>`;
+      }
+
+    // ─────────── XTB SAFETYPAY ───────────
+    } else {
+      const isd      = isdCalc(amount);
+      const penalty  = isd * 0.20;
+      const interest = isd * 0.05;
+      const worst    = isd + penalty + interest;
+
+      cardsHTML = `
+        <div class="result-card danger-card">
+          <div class="rc-top">
+            <div class="rc-broker">XTB — SafetyPay</div>
+            <div class="rc-tag risk">⚠ Riesgo fiscal</div>
+          </div>
+          <div class="rc-rows">
+            <div class="rc-row"><span class="lbl">Fee visible al usuario</span><span class="val good">$0.00</span></div>
+            <div class="rc-row"><span class="lbl">ISD generado (deuda SRI)</span><span class="val danger">${fmt(isd)} adeudados</span></div>
+            <div class="rc-row"><span class="lbl">Multa mínima SRI (20%)</span><span class="val danger">${fmt(penalty)}</span></div>
+            <div class="rc-row"><span class="lbl">Intereses acumulados (~5%/año)</span><span class="val danger">+${fmt(interest)}</span></div>
+          </div>
+          <div class="rc-total">
+            <div><div class="rt-label">Pasivo mínimo en auditoría</div><div class="rt-pct">Si el SRI audita</div></div>
+            <div class="rt-val">${fmt(worst)}+</div>
+          </div>
+        </div>`;
+      verdictHTML = `<div class="danger-note"><strong>Por qué SafetyPay NO es un ahorro de ISD:</strong><br><br>El banco no retiene ISD porque no detecta un wire SWIFT estándar. Parece gratis. Pero el ISD se generó — quedó impago. SafetyPay transfiere los fondos fuera del país y el hecho generador ocurre.<br><br>El SRI intensificó controles sobre procesadores internacionales en 2025. En auditoría: ISD adeudado + intereses + multa mínima del 20% = <strong>${fmt(worst)} o más.</strong><br><br>XTB no pagará esta deuda. Su contrato Belize exime a la empresa explícitamente. <strong>La obligación recae 100% en el inversor.</strong></div>`;
+    }
+
+    document.getElementById('result-cards').innerHTML = cardsHTML;
+    document.getElementById('verdict-box').innerHTML  = verdictHTML;
+    document.getElementById('results').classList.add('visible');
+    document.getElementById('div1').style.display = 'block';
+    document.getElementById('cta').style.display  = 'block';
+    setTimeout(() => document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+  }
+
+  async function handleSubmit() {
+    const email = document.getElementById('email-input').value.trim();
+    if (!email || !email.includes('@')) {
+      document.getElementById('email-input').style.borderColor = 'var(--red)';
+      return;
+    }
+
+    // Submit to Kit
+    try {
+      await fetch('https://app.kit.com/forms/9355445/subscriptions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+        body: JSON.stringify({ email_address: email }),
+      });
+    } catch (e) {
+      // Silent fail — show success regardless to avoid blocking UX
+    }
+
+    document.getElementById('form-state').style.display = 'none';
+    document.getElementById('success-state').classList.add('visible');
+  }
+
+  // Init — show IBKR method field on load
+  document.getElementById('ibkr-method-field').classList.add('visible');
+</script>
+</body>
+</html>
