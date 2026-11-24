@@ -3,26 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculadora del Inversor Ecuatoriano — Finanzas Ecuador</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<title>Calculadora del Inversor Ecuatoriano · Juan Votruba | Inversiones</title>
+<meta name="description" content="Calcula el costo real de entrar al mercado americano desde Ecuador: ISD, comisión bancaria y en cuántos meses lo recuperas.">
+<link rel="icon" href="avatar.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:        #ECEAE6;
+    --sf: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", Inter, "Helvetica Neue", Arial, sans-serif;
+    --bg:        #F6F4EF;
     --bg2:       #F4F2EE;
     --bg3:       #E4E1DC;
     --surface:   #FFFFFF;
     --surface2:  #FAF9F7;
-    --text:      #1A1714;
-    --text2:     #4A4440;
-    --text3:     #7A7470;
+    --text:      #0D0B08;
+    --text2:     #4a453d;
+    --text3:     #756D64;   /* beige base V14 */
     --yellow:    #F5C518;
     --yellow-bg: rgba(245,197,24,0.10);
     --yellow-bd: rgba(245,197,24,0.30);
-    --red:       #C0392B;
-    --red-bg:    rgba(192,57,43,0.07);
-    --red-bd:    rgba(192,57,43,0.20);
-    --green:     #2D7A4F;
-    --green-bg:  rgba(45,122,79,0.08);
+    --red:       #A8511D;   /* terracota V14, oscurecido para texto sobre claro */
+    --red-bg:    rgba(217,116,58,0.09);
+    --red-bd:    rgba(217,116,58,0.34);
+    --green:     #3F6B22;   /* verde V14, oscurecido para texto */
+    --green-fill:#6E9A45;
+    --green-bg:  rgba(143,179,107,0.14);
     --border:    rgba(26,23,20,0.09);
     --border2:   rgba(26,23,20,0.14);
     --radius:    14px;
@@ -32,12 +38,28 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--sf);
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
   }
+
+
+  .top { background:#fff; border-bottom:1px solid var(--border2); }
+  .top-in { max-width:1040px; margin:0 auto; padding:20px 24px; display:flex; align-items:center; gap:16px; }
+  .top .avatar { width:60px; height:60px; border-radius:50%; overflow:hidden; background:var(--yellow); flex:0 0 auto; }
+  .top .avatar img { width:100%; height:100%; object-fit:cover; display:block; }
+  .top .bar { width:4px; height:48px; flex:0 0 4px; border-radius:2px; background:var(--yellow); }
+  .top .brand { display:flex; flex-direction:column; gap:3px; min-width:0; }
+  .top .brand b { font-size:26px; line-height:1.05; font-weight:600; letter-spacing:-.02em; }
+  .top .brand span { font-size:14px; line-height:1.3; color:var(--text2); }
+  .top .brand i { font-style:normal; font-size:12.5px; font-weight:600; color:#8a6d00; }
+  .foot-links { margin-bottom:10px; font-size:13px; }
+  .foot-links a { color:var(--text); font-weight:600; margin:0 10px; text-decoration:none; }
+  .foot-links a:hover { color:#8a6d00; }
+  .foot-tag { margin-top:14px; font-size:11px; font-weight:700; letter-spacing:.2em; line-height:1.6; color:var(--text); }
+  .foot-tag span { color:#8a6d00; }
 
   .hero {
     max-width: 620px;
@@ -62,18 +84,18 @@
     box-shadow: var(--shadow);
   }
   .hero h1 {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: var(--sf);
     font-size: clamp(30px, 6vw, 50px);
-    font-weight: 800;
+    font-weight: 700;
     line-height: 1.06;
     letter-spacing: -0.025em;
     color: var(--text);
     margin-bottom: 16px;
   }
-  .hero h1 em { font-style: normal; color: #8B6F00; }
+  .hero h1 em { font-style: normal; color: #8a6d00; }
   .hero p {
     font-size: 15px;
-    font-weight: 300;
+    font-weight: 400;
     color: var(--text2);
     line-height: 1.68;
     max-width: 440px;
@@ -106,7 +128,7 @@
     margin-bottom: 3px;
   }
   .card-header h2 {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: var(--sf);
     font-size: 16px;
     font-weight: 700;
     color: var(--text);
@@ -129,7 +151,7 @@
     left: 15px;
     top: 50%;
     transform: translateY(-50%);
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: var(--sf);
     font-size: 18px;
     font-weight: 700;
     color: var(--text3);
@@ -141,9 +163,9 @@
     border: 1.5px solid var(--border2);
     border-radius: var(--radius-sm);
     padding: 13px 16px 13px 32px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: var(--sf);
     font-size: 26px;
-    font-weight: 800;
+    font-weight: 700;
     color: var(--text);
     outline: none;
     transition: border-color 0.18s, box-shadow 0.18s;
@@ -170,17 +192,17 @@
   .tab-btn:hover { border-color: rgba(26,23,20,0.22); }
   .tab-btn.active {
     background: rgba(245,197,24,0.22);
-    border-color: #D4A800;
+    border-color: #F5C518;
     box-shadow: 0 0 0 3px rgba(245,197,24,0.10);
   }
   .tab-btn .tb-name {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: var(--sf);
     font-size: 14px;
     font-weight: 700;
     color: var(--text);
     margin-bottom: 3px;
   }
-  .tab-btn.active .tb-name { color: #4A3500; font-weight: 800; }
+  .tab-btn.active .tb-name { color: #0D0B08; font-weight: 700; }
   .tab-btn .tb-sub { font-size: 11px; color: var(--text3); line-height: 1.4; }
 
   #ibkr-method-field { display: none; }
@@ -191,13 +213,13 @@
   #xtb-method-field { display: none; }
   #xtb-method-field.visible { display: block; }
 
-  .result-card.caution-card { background: #FFFDF0; border-color: rgba(180,120,0,0.30); }
+  .result-card.caution-card { background: #FFFDF0; border-color: rgba(138,109,0,0.30); }
   .result-card.caution-card::before { background: var(--yellow); }
-  .result-card.caution-card .rc-broker { color: #7A5F00; }
-  .result-card.caution-card .rt-val { color: #6B4F00; }
-  .rc-tag.caution { background: rgba(245,197,24,0.15); color: #8B6F00; border: 1px solid rgba(180,120,0,0.30); }
-  .isd-deferred { background: rgba(245,197,24,0.10); border: 1px solid rgba(180,120,0,0.22); border-radius: var(--radius-sm); padding: 13px 16px; margin-top: 12px; font-size: 12px; color: #6B4F00; line-height: 1.6; }
-  .isd-deferred strong { color: #5C4200; }
+  .result-card.caution-card .rc-broker { color: #6b5200; }
+  .result-card.caution-card .rt-val { color: #6b5200; }
+  .rc-tag.caution { background: rgba(245,197,24,0.15); color: #8a6d00; border: 1px solid rgba(138,109,0,0.30); }
+  .isd-deferred { background: rgba(245,197,24,0.10); border: 1px solid rgba(138,109,0,0.22); border-radius: var(--radius-sm); padding: 13px 16px; margin-top: 12px; font-size: 12px; color: #6b5200; line-height: 1.6; }
+  .isd-deferred strong { color: #6b5200; }
 
   .method-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .method-btn {
@@ -210,12 +232,12 @@
     transition: all 0.18s;
   }
   .method-btn:hover { border-color: rgba(26,23,20,0.22); }
-  .method-btn.active { background: rgba(245,197,24,0.22); border-color: #D4A800; box-shadow: 0 0 0 2px rgba(245,197,24,0.10); }
-  .method-btn.active .mb-name { color: #4A3500; font-weight: 800; }
+  .method-btn.active { background: rgba(245,197,24,0.22); border-color: #F5C518; box-shadow: 0 0 0 2px rgba(245,197,24,0.10); }
+  .method-btn.active .mb-name { color: #0D0B08; font-weight: 700; }
   .method-btn.danger-btn { border-color: var(--red-bd); background: var(--red-bg); }
-  .method-btn.danger-btn.active { border-color: var(--red); background: rgba(192,57,43,0.12); }
+  .method-btn.danger-btn.active { border-color: var(--red); background: rgba(217,116,58,0.16); }
   .method-btn .mb-name {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: var(--sf);
     font-size: 13px;
     font-weight: 700;
     color: var(--text);
@@ -224,13 +246,13 @@
   .method-btn.danger-btn .mb-name { color: var(--red); }
   .method-btn .mb-sub { font-size: 11px; color: var(--text3); }
   .method-btn.danger-btn .mb-sub { color: var(--red); opacity: 0.7; }
-  .method-btn.caution-btn { border-color: rgba(180,120,0,0.25); background: rgba(245,197,24,0.06); }
+  .method-btn.caution-btn { border-color: rgba(138,109,0,0.25); background: rgba(245,197,24,0.06); }
   .method-btn.caution-btn.active { border-color: var(--yellow); background: rgba(245,197,24,0.13); }
-  .method-btn.caution-btn .mb-name { color: #7A5F00; }
-  .method-btn.caution-btn .mb-sub { color: #9A7800; opacity: 0.85; }
+  .method-btn.caution-btn .mb-name { color: #6b5200; }
+  .method-btn.caution-btn .mb-sub { color: #8a6d00; opacity: 0.85; }
 
-  .caution-note { background: rgba(245,197,24,0.09); border: 1px solid rgba(180,120,0,0.25); border-radius: var(--radius-sm); padding: 16px 18px; margin-top: 6px; font-size: 13px; color: #6B4F00; line-height: 1.65; }
-  .caution-note strong { color: #5C4200; font-weight: 600; }
+  .caution-note { background: rgba(245,197,24,0.09); border: 1px solid rgba(138,109,0,0.25); border-radius: var(--radius-sm); padding: 16px 18px; margin-top: 6px; font-size: 13px; color: #6b5200; line-height: 1.65; }
+  .caution-note strong { color: #6b5200; font-weight: 600; }
 
   #quota-field { display: none; }
   #quota-field.visible { display: block; margin-top: 18px; }
@@ -254,9 +276,9 @@
     box-shadow: 0 1px 4px rgba(0,0,0,0.15);
   }
   .quota-val {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: var(--sf);
     font-size: 16px;
-    font-weight: 800;
+    font-weight: 700;
     color: var(--text);
     min-width: 72px;
     text-align: right;
@@ -286,18 +308,18 @@
   }
   .result-card.winner { background: #FFFEF5; border-color: var(--yellow); }
   .result-card.winner::before { background: var(--yellow); }
-  .result-card.danger-card { background: #FEF8F7; border-color: var(--red-bd); }
+  .result-card.danger-card { background: #FDF5EF; border-color: var(--red-bd); }
   .result-card.danger-card::before { background: var(--red); }
 
   .rc-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
-  .rc-broker { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 700; color: var(--text); }
-  .result-card.winner .rc-broker { color: #7A5F00; }
+  .rc-broker { font-family: var(--sf); font-size: 15px; font-weight: 700; color: var(--text); }
+  .result-card.winner .rc-broker { color: #6b5200; }
   .result-card.danger-card .rc-broker { color: var(--red); }
   .rc-tag {
     font-size: 10px; font-weight: 500; letter-spacing: 0.08em;
     text-transform: uppercase; padding: 3px 10px; border-radius: 100px;
   }
-  .rc-tag.best { background: var(--yellow-bg); color: #8B6F00; border: 1px solid var(--yellow-bd); }
+  .rc-tag.best { background: var(--yellow-bg); color: #8a6d00; border: 1px solid var(--yellow-bd); }
   .rc-tag.neutral { background: var(--bg3); color: var(--text2); border: 1px solid var(--border2); }
   .rc-tag.risk { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-bd); }
 
@@ -305,7 +327,7 @@
   .rc-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
   .rc-row .lbl { color: var(--text2); }
   .rc-row .val { font-weight: 500; color: var(--text); }
-  .rc-row .val.accent { color: #8B6F00; }
+  .rc-row .val.accent { color: #8a6d00; }
   .rc-row .val.danger { color: var(--red); }
   .rc-row .val.good { color: var(--green); }
 
@@ -314,16 +336,16 @@
     margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border);
   }
   .rt-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text2); margin-bottom: 2px; }
-  .rt-val { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 26px; font-weight: 800; color: var(--text); line-height: 1; }
-  .result-card.winner .rt-val { color: #5C4500; }
+  .rt-val { font-family: var(--sf); font-size: 26px; font-weight: 700; color: var(--text); line-height: 1; }
+  .result-card.winner .rt-val { color: #6b5200; }
   .result-card.danger-card .rt-val { color: var(--red); }
   .rt-pct { font-size: 12.5px; color: var(--text2); margin-top: 3px; }
 
   .recovery { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
   .rec-row { display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; color: var(--text3); margin-bottom: 8px; }
-  .rec-months { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 700; color: var(--green); }
+  .rec-months { font-family: var(--sf); font-size: 14px; font-weight: 700; color: var(--green); }
   .bar-track { height: 5px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
-  .bar-fill { height: 100%; border-radius: 3px; background: var(--green); transition: width 0.7s cubic-bezier(0.4,0,0.2,1); }
+  .bar-fill { height: 100%; border-radius: 3px; background: var(--green-fill); transition: width 0.7s cubic-bezier(0.4,0,0.2,1); }
 
   .verdict { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 18px; margin-top: 6px; font-size: 13px; color: var(--text2); line-height: 1.65; }
   .verdict strong { color: var(--text); }
@@ -333,7 +355,7 @@
   .calc-btn {
     width: 100%; background: var(--text); color: #FFFFFF; border: none;
     border-radius: var(--radius-sm); padding: 16px;
-    font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 0.01em;
+    font-family: var(--sf); font-size: 15px; font-weight: 700; letter-spacing: 0.01em;
     cursor: pointer; transition: opacity 0.18s, transform 0.14s; margin-top: 6px;
   }
   .calc-btn:hover { opacity: 0.85; transform: translateY(-1px); }
@@ -344,20 +366,20 @@
     border-radius: 20px; box-shadow: var(--shadow-lg); padding: 32px 28px; margin-top: 12px; text-align: center;
   }
   .cta-eyebrow { font-size: 10px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
-  .cta-card h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 21px; font-weight: 800; color: var(--text); margin-bottom: 8px; line-height: 1.2; letter-spacing: -0.015em; }
-  .cta-card h3 em { font-style: normal; color: #8B6F00; }
+  .cta-card h3 { font-family: var(--sf); font-size: 21px; font-weight: 700; color: var(--text); margin-bottom: 8px; line-height: 1.2; letter-spacing: -0.015em; }
+  .cta-card h3 em { font-style: normal; color: #8a6d00; }
   .cta-card p { font-size: 13.5px; color: var(--text2); line-height: 1.65; margin-bottom: 22px; max-width: 380px; margin-left: auto; margin-right: auto; }
   .email-row { display: flex; gap: 8px; max-width: 420px; margin: 0 auto 11px; }
   .email-input {
     flex: 1; background: var(--bg2); border: 1.5px solid var(--border2);
     border-radius: var(--radius-sm); padding: 13px 15px;
-    font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); outline: none; transition: border-color 0.18s;
+    font-family: var(--sf); font-size: 14px; color: var(--text); outline: none; transition: border-color 0.18s;
   }
   .email-input::placeholder { color: var(--text3); }
   .email-input:focus { border-color: var(--text); }
   .cta-submit {
     background: var(--yellow); color: var(--text); border: none; border-radius: var(--radius-sm);
-    padding: 13px 20px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 700;
+    padding: 13px 20px; font-family: var(--sf); font-size: 13px; font-weight: 700;
     cursor: pointer; white-space: nowrap; transition: opacity 0.18s, transform 0.14s;
   }
   .cta-submit:hover { opacity: 0.88; transform: translateY(-1px); }
@@ -366,7 +388,7 @@
   .success-state { display: none; padding: 8px 0; }
   .success-state.visible { display: block; }
   .success-icon { font-size: 36px; margin-bottom: 10px; }
-  .success-state h4 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .success-state h4 { font-family: var(--sf); font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
   .success-state p { font-size: 13px; color: var(--text2); line-height: 1.65; }
 
   .footer { text-align: center; padding: 24px 24px 48px; font-size: 11px; color: var(--text3); line-height: 1.7; max-width: 640px; margin: 0 auto; }
@@ -376,6 +398,11 @@
     to   { opacity: 1; transform: translateY(0); }
   }
   @media (max-width: 480px) {
+    .top-in { padding:14px 16px; gap:12px; }
+    .top .avatar { width:48px; height:48px; }
+    .top .bar { height:38px; }
+    .top .brand b { font-size:20px; }
+    .top .brand span { font-size:12px; }
     .hero { padding: 36px 16px 24px; }
     .card-body { padding: 20px 18px; }
     .cta-card { padding: 24px 18px; }
@@ -387,8 +414,15 @@
 </head>
 <body>
 
+<header class="top">
+  <div class="top-in">
+    <div class="avatar"><img src="avatar.png" alt="Juan Votruba" width="60" height="60"></div>
+    <div class="bar"></div>
+    <div class="brand"><b>Juan Votruba</b><span>Inversiones y libertad financiera</span><i>Calculadora de costos</i></div>
+  </div>
+</header>
+
 <div class="hero">
-  <div class="hero-badge">🇪🇨 Finanzas Ecuador · Juan</div>
   <h1>¿Cuánto Cuesta Invertir<br><em>Desde Ecuador?</em></h1>
   <p>Calcula el costo real de entrar al mercado americano — ISD, comisión bancaria, y en cuántos meses lo recuperas.</p>
 </div>
@@ -514,7 +548,9 @@
 
   <div class="footer">
     Calculadora educativa — no constituye asesoría financiera o tributaria certificada.<br>
-    Tarifas bancarias verificadas abril 2026 · ISD 2026 verificado en el SRI (nov-2026): exención $1,446 por quincena · XTB ya no acepta clientes nuevos de Ecuador · Finanzas Ecuador · Juan
+    Tarifas bancarias verificadas abril 2026 · ISD 2026 verificado en el SRI (nov-2026): exención $1,446 por quincena · XTB ya no acepta clientes nuevos de Ecuador
+    <div class="foot-links" style="margin-top:14px;"><a href="https://newsletter.juanvotruba.com" style="white-space:nowrap">Newsletter: Lunes en Wall Street</a> · <a href="https://mentoria.juanvotruba.com" style="white-space:nowrap">Mentoría 1:1</a> · <a href="https://www.youtube.com/@juanvotruba">YouTube</a></div>
+    <div class="foot-tag">LIBERTAD FINANCIERA. <span>SIN EXCUSAS.</span></div>
   </div>
 </div>
 
@@ -692,7 +728,7 @@
             <div class="rt-val">${fmt(visibleCost)}</div>
           </div>
           <div class="recovery">
-            <div class="rec-row"><span>Rango según el premium de Binance (0.15%–0.63% en mis transferencias de $250)</span><span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;white-space:nowrap;margin-left:12px;">${pctOf(rngLo, amount)} – ${pctOf(rngHi, amount)}</span></div>
+            <div class="rec-row"><span>Rango según el premium de Binance (0.15%–0.63% en mis transferencias de $250)</span><span style="font-family:var(--sf);font-size:14px;font-weight:700;white-space:nowrap;margin-left:12px;">${pctOf(rngLo, amount)} – ${pctOf(rngHi, amount)}</span></div>
             ${recoveryRows(visibleCost, amount, 'Recuperas el costo visible en')}
           </div>
           <div class="isd-deferred">
